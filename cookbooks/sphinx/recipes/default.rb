@@ -255,8 +255,7 @@ else
         end
 
         execute "#{flavor} rebuild" do
-          command "sudo monit stop sphinx_seek_9312"
-          command "bundle exec rake #{flavor}:rebuild"
+          command "sudo monit unmonitor sphinx_seek_9312; bundle exec rake #{flavor}:rebuild; sudo monit monitor sphinx_seek_9312"
           user node[:owner_name]
           environment({
             'HOME' => "/home/#{node[:owner_name]}",
