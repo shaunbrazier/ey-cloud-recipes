@@ -4,7 +4,7 @@
 #
 
 # Set your application name here
-appname = "myapp"
+appname = "seek"
 
 # Uncomment the flavor of sphinx you want to use
 flavor = "thinking_sphinx"
@@ -27,7 +27,7 @@ utility_name = nil
 # If you don't want scheduled reindexes, just leave this set to nil.
 # Setting it equal to 10 would run the cron job every 10 minutes.
 
-cron_interval = nil #If this is not set your data will NOT be indexed
+cron_interval = 10 #If this is not set your data will NOT be indexed
 
 
 if ! File.exists?("/data/#{appname}/current")
@@ -138,13 +138,13 @@ else
           })
           cwd "/data/#{app_name}/current"
         end
-
-        ey_cloud_report "indexing #{flavor}" do
-          message "indexing #{flavor}"
+        
+        ey_cloud_report "rebuild #{flavor}" do
+          message "rebuilding #{flavor}"
         end
 
-        execute "#{flavor} index" do
-          command "bundle exec rake #{flavor}:index"
+        execute "#{flavor} rebuild" do
+          command "bundle exec rake #{flavor}:rebuild"
           user node[:owner_name]
           environment({
             'HOME' => "/home/#{node[:owner_name]}",
@@ -155,18 +155,19 @@ else
 
         execute "monit reload"
 
-        if cron_interval
-          cron "sphinx index" do
-            action  :create
-            minute  "*/#{cron_interval}"
-            hour    '*'
-            day     '*'
-            month   '*'
-            weekday '*'
-            command "cd /data/#{app_name}/current && RAILS_ENV=#{node[:environment][:framework_env]} bundle exec rake #{flavor}:index"
-            user node[:owner_name]
-          end
-        end
+        #CRON NOW MANAGED BY WHENEVER GEM AND REBUILT UPON DEPLOY USING WHENEVER RECIPE
+        # if cron_interval
+#           cron "sphinx index" do
+#             action  :create
+#             minute  "*/#{cron_interval}"
+#             hour    '*'
+#             day     '*'
+#             month   '*'
+#             weekday '*'
+#             command "cd /data/#{app_name}/current && RAILS_ENV=#{node[:environment][:framework_env]} bundle exec rake #{flavor}:index"
+#             user node[:owner_name]
+#           end
+#         end
       end
     end
   else
@@ -248,12 +249,12 @@ else
           cwd "/data/#{app_name}/current"
         end
 
-        ey_cloud_report "indexing #{flavor}" do
-          message "indexing #{flavor}"
+        ey_cloud_report "rebuilding #{flavor}" do
+          message "rebuilding #{flavor}"
         end
 
-        execute "#{flavor} index" do
-          command "bundle exec rake #{flavor}:index"
+        execute "#{flavor} rebuild" do
+          command "bundle exec rake #{flavor}:rebuild"
           user node[:owner_name]
           environment({
             'HOME' => "/home/#{node[:owner_name]}",
@@ -263,19 +264,20 @@ else
         end
 
         execute "monit reload"
-
-        if cron_interval
-          cron "sphinx index" do
-            action  :create
-            minute  "*/#{cron_interval}"
-            hour    '*'
-            day     '*'
-            month   '*'
-            weekday '*'
-            command "cd /data/#{app_name}/current && RAILS_ENV=#{node[:environment][:framework_env]} bundle exec rake #{flavor}:index"
-            user node[:owner_name]
-          end
-        end
+        
+        #CRON NOW MANAGED BY WHENEVER GEM AND REBUILT UPON DEPLOY USING WHENEVER RECIPE
+        # if cron_interval
+        #   cron "sphinx index" do
+        #     action  :create
+        #     minute  "*/#{cron_interval}"
+        #     hour    '*'
+        #     day     '*'
+        #     month   '*'
+        #     weekday '*'
+        #     command "cd /data/#{app_name}/current && RAILS_ENV=#{node[:environment][:framework_env]} bundle exec rake #{flavor}:index"
+        #     user node[:owner_name]
+        #   end
+        # end
       end
     end
   end

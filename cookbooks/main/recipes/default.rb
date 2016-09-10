@@ -11,7 +11,17 @@
 # include_recipe "deny-directories"
 
 # uncomment to turn on thinking sphinx 2/ultra sphinx. Remember to edit cookbooks/sphinx/recipes/default.rb first!
-# include_recipe "sphinx"
+Chef::Log.info "Setting Timezone via Chef" 
+include_recipe "timezone"
+
+Chef::Log.info "Configuring Delayed Job via Chef" 
+include_recipe "delayed_job"
+
+Chef::Log.info "Configuring Sphinx/Thinking Sphinx via Chef" 
+include_recipe "sphinx"
+
+Chef::Log.info "Configuring Whenever Cron Rebuild via Chef" 
+require_recipe "whenever"
 
 # uncomment to turn on thinking sphinx 3. See cookbooks/thinking-sphinx-3/readme.md for documentation.
 # include_recipe "thinking-sphinx-3"
