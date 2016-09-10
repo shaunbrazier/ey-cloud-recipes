@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 
-if ["solo", "app_master"].include? node[:instance_role] || (node[:instance_role] == "util" && node[:name] !~ /^(mongodb|redis|memcache)/)  template "/engineyard/bin/dj" do
+if ["solo", "app_master"].include? node[:instance_role] || (node[:instance_role] == "util" && node[:name] !~ /^(mongodb|redis|memcache)/)
   template "/engineyard/bin/dj" do
     source "dj.erb"
     owner "root"
