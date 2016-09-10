@@ -21,7 +21,7 @@ Chef::Log.info "Configuring Sphinx/Thinking Sphinx via Chef"
 include_recipe "sphinx"
 
 Chef::Log.info "Configuring Whenever Cron Rebuild via Chef" 
-require_recipe "whenever"
+#require_recipe "whenever"
 
 # uncomment to turn on thinking sphinx 3. See cookbooks/thinking-sphinx-3/readme.md for documentation.
 # include_recipe "thinking-sphinx-3"
